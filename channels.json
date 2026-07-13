@@ -1,0 +1,18 @@
+{
+  "current": "v1.0.0",
+  "frozen": false,
+  "updated_at": "2026-07-12",
+  "channels": {
+    "stable": {
+      "version": "v1.0.0",
+      "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
+      "beacon_sri": "sha384-Zv9TlliJx2EQffwpivCVBTx2UWzqMwkdyh4Q3DDOmt2+OxGC48GREKSaxXoe4v1A"
+    },
+    "canary": {
+      "version": "v1.0.0",
+      "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
+      "beacon_sri": "sha384-Zv9TlliJx2EQffwpivCVBTx2UWzqMwkdyh4Q3DDOmt2+OxGC48GREKSaxXoe4v1A"
+    }
+  },
+  "rollout": { "canary_pct": 0, "ring": 0, "expanded_at": null }
+}

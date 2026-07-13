@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Octagonal — an arcade for games that probably shouldn't exist</title>
+<meta name="description" content="Octagonal: a curated arcade of vibe-coded, retro-inspired browser games. Free, no login, unblocked. Eight sides, eight bits, infinite continues. Insert coin.">
+<link rel="canonical" href="https://octago.nl/">
+<meta name="theme-color" content="#0b0420">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Octagonal — vibe-coded retro arcade">
+<meta property="og:description" content="An arcade for games that probably shouldn't exist. Insert coin.">
+<meta property="og:url" content="https://octago.nl/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Octagonal Arcade",
+ "url":"https://octago.nl/","about":"A curated arcade of vibe-coded retro-inspired browser games.",
+ "publisher":{"@type":"Organization","name":"Octagonal","url":"https://octago.nl"}}
+</script>
+<style>
+  :root{--bg:#0b0420;--cyan:#20e6ff;--mag:#ff2fb9;--ink:#e9e6ff;--dim:#8f86c9}
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%;background:radial-gradient(130% 90% at 50% 0%,#2a1160 0%,var(--bg) 55%,#050213 100%);color:var(--ink);font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace}
+  body{display:flex;flex-direction:column;align-items:center;padding:26px 14px 40px;gap:18px}
+  .grid-bg{position:fixed;inset:0;z-index:-1;background:linear-gradient(transparent 0 96%,rgba(32,230,255,.12) 96%),linear-gradient(90deg,transparent 0 96%,rgba(32,230,255,.12) 96%);background-size:34px 34px;mask:linear-gradient(to bottom,transparent,#000 70%);opacity:.5}
+  .scan{position:fixed;inset:0;z-index:-1;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.14) 2px 3px)}
+  h1{font-size:clamp(34px,10vw,72px);margin:.2em 0 0;letter-spacing:.04em;color:#fff;text-shadow:0 0 12px var(--mag),0 0 34px rgba(255,47,185,.6)}
+  h1 .a{color:var(--cyan);text-shadow:0 0 12px var(--cyan),0 0 34px rgba(32,230,255,.6)}
+  .tag{color:var(--dim);letter-spacing:.14em;text-transform:uppercase;font-size:clamp(11px,2.6vw,14px)}
+  .marq{overflow:hidden;white-space:nowrap;max-width:96vw;color:var(--cyan);opacity:.8;font-size:12px;letter-spacing:.2em}
+  .marq b{color:var(--mag)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;width:min(96vw,860px);margin-top:8px}
+  .cab{position:relative;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;border:2px solid rgba(32,230,255,.3);border-radius:14px;padding:14px;background:rgba(7,2,37,.6);box-shadow:0 0 22px rgba(255,47,185,.12),inset 0 0 30px rgba(11,4,32,.8);transition:transform .12s,box-shadow .12s,border-color .12s;aspect-ratio:3/4}
+  .cab:hover,.cab:focus{transform:translateY(-3px);border-color:var(--mag);box-shadow:0 0 26px rgba(255,47,185,.45)}
+  .art{flex:1;border-radius:9px;display:grid;place-items:center;font-size:34px;background:radial-gradient(80% 70% at 50% 30%,#2a1160,#070225);box-shadow:inset 0 0 24px rgba(32,230,255,.18)}
+  .cab h3{margin:0;font-size:15px;color:#fff}
+  .cab small{color:var(--dim)}
+  .cta{align-self:flex-start;font-size:11px;letter-spacing:.12em;color:#0b0420;background:var(--cyan);border-radius:6px;padding:4px 9px;font-weight:700}
+  .cab.soon{opacity:.55;pointer-events:none;border-style:dashed}
+  .cab.soon .cta{background:#3a3363;color:var(--dim)}
+  footer{margin-top:16px;color:var(--dim);font-size:12px;text-align:center;line-height:1.7}
+  a.k{color:var(--cyan);text-decoration:none} a.k:hover{text-decoration:underline}
+  @media (prefers-reduced-motion: reduce){.scan{display:none}}
+</style>
+</head>
+<body>
+  <div class="grid-bg"></div><div class="scan"></div>
+  <div class="tag">⯃ octago.nl</div>
+  <h1>OCTAG<span class="a">O</span>NAL</h1>
+  <div class="tag">Eight sides · eight bits · infinite continues</div>
+  <div class="marq"><b>made with vibes, not design docs</b> · physics are a suggestion · high scores are a state of mind · insert coin to continue</div>
+
+  <div class="grid" id="arcade">
+    <a class="cab" href="/neon-serpent" aria-label="Play Neon Serpent">
+      <div class="art">🐍</div>
+      <h3>Neon Serpent</h3>
+      <small>grid trail-survival</small>
+      <span class="cta">▶ INSERT COIN</span>
+    </a>
+    <div class="cab soon"><div class="art">▦</div><h3>Prism Stacker</h3><small>falling-block</small><span class="cta">SOON</span></div>
+    <div class="cab soon"><div class="art">◇</div><h3>Gate Crasher</h3><small>dodge runner</small><span class="cta">SOON</span></div>
+    <div class="cab soon"><div class="art">✧</div><h3>Vector Drift</h3><small>asteroids-like</small><span class="cta">SOON</span></div>
+  </div>
+
+  <footer>
+    a self-operating arcade of vibe-coded games<br>
+    <a class="k" href="/neon-serpent">play Neon Serpent</a> · <a class="k" href="https://github.com/Octago-nl" rel="noopener">github/Octago-nl</a><br>
+    <small>octago.nl — yeah, we dropped a bit.</small>
+  </footer>
+
+<script>
+  // Canonical origin also hosts engine.js/beacon.js/channels.json for every game to load.
+  window.OCTAGO_COLLECTOR = ""; window.OCTAGO_SLUG = "site";
+</script>
+<script src="/beacon.js" onerror="1"></script>
+<script>try{window.OCTAGO_BEACON&&window.OCTAGO_BEACON.emit("play_start",{entity:"site",value:1,unit:"count",dims:{referrer:document.referrer}});}catch(e){}</script>
+</body>
+</html>
