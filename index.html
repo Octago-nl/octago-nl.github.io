@@ -40,6 +40,24 @@
   footer{margin-top:16px;color:var(--dim);font-size:12px;text-align:center;line-height:1.7}
   a.k{color:var(--cyan);text-decoration:none} a.k:hover{text-decoration:underline}
   @media (prefers-reduced-motion: reduce){.scan{display:none}}
+  /* ---- dynamic game search / filter ---- */
+  .search{width:min(96vw,860px);display:flex;flex-direction:column;gap:10px;margin-top:4px}
+  .search .box{display:flex;align-items:center;gap:8px;border:2px solid rgba(32,230,255,.3);border-radius:12px;padding:10px 14px;background:rgba(7,2,37,.6);box-shadow:inset 0 0 30px rgba(11,4,32,.8)}
+  .search .box:focus-within{border-color:var(--mag);box-shadow:0 0 22px rgba(255,47,185,.3),inset 0 0 30px rgba(11,4,32,.8)}
+  .search input{flex:1;min-width:0;background:transparent;border:0;outline:none;color:var(--ink);font:inherit;font-size:15px;letter-spacing:.02em}
+  .search input::placeholder{color:var(--dim)}
+  .search .ic{color:var(--cyan);font-size:16px}
+  .search .clr{background:none;border:0;color:var(--dim);cursor:pointer;font:inherit;font-size:15px;padding:2px 6px;visibility:hidden}
+  .search .clr.on{visibility:visible}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{cursor:pointer;font:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border:1px solid rgba(143,134,201,.4);border-radius:999px;padding:4px 10px;background:transparent}
+  .chip:hover,.chip.on{color:#0b0420;background:var(--cyan);border-color:var(--cyan)}
+  .count{color:var(--dim);font-size:12px;letter-spacing:.1em;min-height:1.1em}
+  .cab.hide{display:none}
+  .empty{grid-column:1/-1;text-align:center;color:var(--dim);padding:34px 10px;display:none}
+  .empty.on{display:block}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  .cab.soon .cta{color:#d7d2f2}
 </style>
 </head>
 <body>
@@ -49,33 +67,144 @@
   <div class="tag">Eight sides · eight bits · infinite continues</div>
   <div class="marq"><b>made with vibes, not design docs</b> · physics are a suggestion · high scores are a state of mind · insert coin to continue</div>
 
+  <form class="search" role="search" id="search" onsubmit="return false" aria-label="Search games">
+    <div class="box">
+      <span class="ic" aria-hidden="true">⌕</span>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" aria-label="Search games by name, genre, mechanic, or mood" placeholder="search games — try “snake”, “shooter”, “puzzle”, “chill”…">
+      <button type="button" class="clr" id="clr" aria-label="Clear search">✕</button>
+    </div>
+    <div class="chips" id="chips" aria-label="Quick genre filters"></div>
+    <div class="count" id="count" role="status" aria-live="polite"></div>
+  </form>
+
+  <h2 class="sr-only">Arcade — browse and search the games</h2>
   <div class="grid" id="arcade">
-    <a class="cab" href="/neon-serpent" aria-label="Play Neon Serpent">
-      <div class="art">🐍</div>
+    <a class="cab" href="/neon-serpent"
+       data-title="Neon Serpent" data-genre="arcade" data-mechanic="snake grid trail-survival"
+       data-tags="snake, light-trail, grid, retro, reflex, high-score, one-more-go, unblocked, neon"
+       data-mood="intense reflex" data-controls="arrows wasd swipe" data-players="1p">
+      <div class="art" aria-hidden="true">🐍</div>
       <h3>Neon Serpent</h3>
       <small>grid trail-survival</small>
       <span class="cta">▶ INSERT COIN</span>
     </a>
-    <a class="cab" href="/swarm-forge" aria-label="Play Swarm Forge">
-      <div class="art">✷</div>
+    <a class="cab" href="/swarm-forge"
+       data-title="Swarm Forge" data-genre="survival" data-mechanic="auto-fire survivor upgrade-picks"
+       data-tags="survivor-like, auto-battler, roguelite, bullet-heaven, upgrades, endless, waves, horde, unblocked"
+       data-mood="strategic intense" data-controls="move touch" data-players="1p">
+      <div class="art" aria-hidden="true">✷</div>
       <h3>Swarm Forge</h3>
       <small>auto-fire survival</small>
       <span class="cta">▶ INSERT COIN</span>
     </a>
-    <a class="cab" href="/vapor-ace" aria-label="Play Vapor Ace">
-      <div class="art">✈️</div>
+    <a class="cab" href="/vapor-ace"
+       data-title="Vapor Ace" data-genre="shooter" data-mechanic="lock-on flight combat"
+       data-tags="shmup, flight, jet, synthwave, lock-on, missiles, combo, rail, unblocked"
+       data-mood="intense" data-controls="move touch" data-players="1p">
+      <div class="art" aria-hidden="true">✈️</div>
       <h3>Vapor Ace</h3>
       <small>lock-on flight combat</small>
       <span class="cta">▶ INSERT COIN</span>
     </a>
-    <div class="cab soon"><div class="art">▦</div><h3>Prism Stacker</h3><small>falling-block</small><span class="cta">SOON</span></div>
-    <div class="cab soon"><div class="art">◇</div><h3>Gate Crasher</h3><small>dodge runner</small><span class="cta">SOON</span></div>
-    <div class="cab soon"><div class="art">✧</div><h3>Vector Drift</h3><small>asteroids-like</small><span class="cta">SOON</span></div>
+    <a class="cab" href="/vector-drift"
+       data-title="Vector Drift" data-genre="shooter" data-mechanic="inertial wireframe rock-splitting shooter"
+       data-tags="vector, space, inertia, wireframe, rocks, retro, shooter, unblocked" data-mood="intense" data-controls="rotate thrust fire" data-players="1p">
+      <div class="art" aria-hidden="true">✧</div>
+      <h3>Vector Drift</h3>
+      <small>inertia shooter</small>
+      <span class="cta">▶ INSERT COIN</span>
+    </a>
+    <a class="cab" href="/facet-breaker"
+       data-title="Facet Breaker" data-genre="arcade" data-mechanic="paddle-deflection lattice-shatter"
+       data-tags="brick-shatter, paddle, lattice, combo, power-ups, arcade, reflex, unblocked, neon"
+       data-mood="crunchy intense" data-controls="paddle drag touch" data-players="1p">
+      <div class="art" aria-hidden="true">💎</div>
+      <h3>Facet Breaker</h3>
+      <small>paddle brick-shatter</small>
+      <span class="cta">▶ INSERT COIN</span>
+    </a>
+    <a class="cab" href="/volley-duel"
+       data-title="Volley Duel" data-genre="sports" data-mechanic="paddle-volley duel rally"
+       data-tags="paddle-duel, volley, rally, spin, versus, local-2p, ladder, arcade, unblocked"
+       data-mood="competitive reflex" data-controls="arrows wasd touch" data-players="1p 2p">
+      <div class="art" aria-hidden="true">🏓</div>
+      <h3>Volley Duel</h3>
+      <small>paddle volley duel</small>
+      <span class="cta">▶ INSERT COIN</span>
+    </a>
+    <a class="cab" href="/sentinel-rift"
+       data-title="Sentinel Rift" data-genre="shooter" data-mechanic="free-flight barrier boss siege"
+       data-tags="barrier-shooter, boss-battle, free-flight, 8-way, siege, arcade, unblocked, sci-fi"
+       data-mood="intense" data-controls="move fire touch" data-players="1p">
+      <div class="art" aria-hidden="true">🛡️</div>
+      <h3>Sentinel Rift</h3>
+      <small>barrier boss shooter</small>
+      <span class="cta">▶ INSERT COIN</span>
+    </a>
+    <a class="cab" href="/relic-warren"
+       data-title="Relic Warren" data-genre="adventure" data-mechanic="top-down key-gate relic hunt"
+       data-tags="dungeon-crawl, key-gate, relic-hunt, top-down, exploration, maze, chase-ai, unblocked, retro"
+       data-mood="atmospheric exploratory" data-controls="arrows wasd touch" data-players="1p">
+      <div class="art" aria-hidden="true">🗝️</div>
+      <h3>Relic Warren</h3>
+      <small>dungeon relic hunt</small>
+      <span class="cta">▶ INSERT COIN</span>
+    </a>
+    <a class="cab" href="/canyon-run"
+       data-title="Canyon Run" data-genre="platformer" data-mechanic="side-scroll vine-swing platformer"
+       data-tags="platformer, side-scroll, vine-swing, hazard-dodge, treasure, timer, runner, unblocked, retro"
+       data-mood="adventurous fast-paced" data-controls="arrows wasd touch" data-players="1p">
+      <div class="art" aria-hidden="true">🏃</div>
+      <h3>Canyon Run</h3>
+      <small>vine-swing platformer</small>
+      <span class="cta">▶ INSERT COIN</span>
+    </a>
+    <a class="cab" href="/helix-well"
+       data-title="Helix Well" data-genre="shooter" data-mechanic="lane rim-shooter tube well"
+       data-tags="tube-shooter, lane-defense, rim-shooter, perspective, well, wave-shooter, arcade, unblocked, retro"
+       data-mood="intense" data-controls="move fire touch" data-players="1p">
+      <div class="art" aria-hidden="true">🌀</div>
+      <h3>Helix Well</h3>
+      <small>tube rim shooter</small>
+      <span class="cta">▶ INSERT COIN</span>
+    </a>
+    <a class="cab" href="/bastion-4"
+       data-title="Bastion 4" data-genre="arcade" data-mechanic="four-corner ricochet siege"
+       data-tags="four-corner, siege, ricochet, paddle-arc, shield-break, arcade, unblocked, strategy"
+       data-mood="strategic intense" data-controls="drag rotate touch" data-players="1p">
+      <div class="art" aria-hidden="true">🏰</div>
+      <h3>Bastion 4</h3>
+      <small>four-corner siege</small>
+      <span class="cta">▶ INSERT COIN</span>
+    </a>
+    <a class="cab" href="/myriapod-grove"
+       data-title="Myriapod Grove" data-genre="shooter" data-mechanic="segmented-crawler field shooter"
+       data-tags="segmented-crawler, field-shooter, bug-hunt, split-mechanic, wave-shooter, arcade, unblocked, retro"
+       data-mood="intense reflex" data-controls="move fire touch" data-players="1p">
+      <div class="art" aria-hidden="true">🐛</div>
+      <h3>Myriapod Grove</h3>
+      <small>segmented bug shooter</small>
+      <span class="cta">▶ INSERT COIN</span>
+    </a>
+    <a class="cab" href="/aegis-arc"
+       data-title="Aegis Arc" data-genre="defense" data-mechanic="trajectory interception defense"
+       data-tags="trajectory-defense, interception, chain-detonation, wave-shooter, arcade, unblocked, retro"
+       data-mood="tense strategic" data-controls="aim tap touch" data-players="1p">
+      <div class="art" aria-hidden="true">🎯</div>
+      <h3>Aegis Arc</h3>
+      <small>trajectory interception</small>
+      <span class="cta">▶ INSERT COIN</span>
+    </a>
+    <div class="cab soon" data-title="Prism Stacker" data-genre="puzzle" data-mechanic="falling-block stacker row-clear"
+         data-tags="falling-block, blocks, stacker, lines, puzzle, cerebral, chill, unblocked" data-mood="cerebral chill" data-controls="rotate move" data-players="1p"><div class="art" aria-hidden="true">▦</div><h3>Prism Stacker</h3><small>falling-block</small><span class="cta">SOON</span></div>
+    <div class="cab soon" data-title="Gate Crasher" data-genre="arcade" data-mechanic="lane-weave dodge runner"
+         data-tags="runner, dodge, endless, reflex, lanes, multiplier, arcade, unblocked" data-mood="intense reflex" data-controls="left right touch" data-players="1p"><div class="art" aria-hidden="true">◇</div><h3>Gate Crasher</h3><small>dodge runner</small><span class="cta">SOON</span></div>
   </div>
 
   <footer>
     a self-operating arcade of vibe-coded games<br>
-    <a class="k" href="/neon-serpent">play Neon Serpent</a> · <a class="k" href="/swarm-forge">play Swarm Forge</a> · <a class="k" href="/vapor-ace">play Vapor Ace</a> · <a class="k" href="https://github.com/Octago-nl" rel="noopener">github/Octago-nl</a><br>
+    <a class="k" href="/neon-serpent">Neon Serpent</a> · <a class="k" href="/swarm-forge">Swarm Forge</a> · <a class="k" href="/vapor-ace">Vapor Ace</a> · <a class="k" href="/vector-drift">Vector Drift</a> · <a class="k" href="/facet-breaker">Facet Breaker</a> · <a class="k" href="/volley-duel">Volley Duel</a> · <a class="k" href="/sentinel-rift">Sentinel Rift</a> · <a class="k" href="/relic-warren">Relic Warren</a> · <a class="k" href="/canyon-run">Canyon Run</a> · <a class="k" href="/helix-well">Helix Well</a> · <a class="k" href="/bastion-4">Bastion 4</a> · <a class="k" href="/myriapod-grove">Myriapod Grove</a> · <a class="k" href="/aegis-arc">Aegis Arc</a><br>
+    <a class="k" href="https://github.com/Octago-nl" rel="noopener">github/Octago-nl</a><br>
     <small>octago.nl — yeah, we dropped a bit.</small>
   </footer>
 
@@ -85,5 +214,75 @@
 </script>
 <script src="/beacon.js" onerror="1"></script>
 <script>try{window.OCTAGO_BEACON&&window.OCTAGO_BEACON.emit("play_start",{entity:"site",value:1,unit:"count",dims:{referrer:document.referrer}});}catch(e){}</script>
+<script>
+/* Dynamic game search: filters + reorders the static (crawlable) tiles client-side.
+   Progressive enhancement — with JS off, all tiles remain visible. Reads per-tile
+   data-* metadata (title/genre/mechanic/tags/mood/controls/players) so any tile the
+   catalog-register step adds with these attributes participates automatically. */
+(function(){
+  var grid=document.getElementById("arcade"), q=document.getElementById("q"),
+      clr=document.getElementById("clr"), count=document.getElementById("count"),
+      chipsWrap=document.getElementById("chips");
+  if(!grid||!q) return;
+  var tiles=[].slice.call(grid.querySelectorAll(".cab"));
+  tiles.forEach(function(t,i){
+    var d=t.dataset, h3=t.querySelector("h3");
+    t._i=i;
+    t._hay=[(d.title||(h3?h3.textContent:"")),d.genre,d.mechanic,d.tags,d.mood,d.controls,d.players].join(" ").toLowerCase();
+    t._title=(d.title||(h3?h3.textContent:"")).toLowerCase();
+  });
+  var empty=document.createElement("div");
+  empty.className="empty"; empty.id="noresults";
+  empty.textContent="no games match — try “shooter”, “puzzle”, or clear the search";
+  grid.appendChild(empty);
+  // genre chips (derived from the tiles present)
+  var genres=[]; tiles.forEach(function(t){var g=(t.dataset.genre||"").trim(); if(g&&genres.indexOf(g)<0)genres.push(g);});
+  var activeChip="";
+  genres.forEach(function(g){
+    var c=document.createElement("button"); c.type="button"; c.className="chip"; c.textContent=g; c.setAttribute("aria-pressed","false");
+    c.addEventListener("click",function(){
+      if(activeChip===g){activeChip="";} else {activeChip=g;}
+      chipsWrap.querySelectorAll(".chip").forEach(function(x){var on=x.textContent===activeChip;x.classList.toggle("on",on);x.setAttribute("aria-pressed",on?"true":"false");});
+      apply();
+    });
+    chipsWrap.appendChild(c);
+  });
+  function toks(s){return s.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);}
+  function score(t,ts,genre){
+    if(genre && (t.dataset.genre||"")!==genre) return -1;      // chip = hard AND on genre
+    if(!ts.length) return 0.001;                                // no query -> keep (base rank)
+    var s=0;
+    for(var i=0;i<ts.length;i++){ var tk=ts[i];
+      if(t._hay.indexOf(tk)<0) return -1;                       // every token must match somewhere
+      s += (t._title.indexOf(tk)>=0?3:1);                       // title hits rank higher
+    }
+    return s;
+  }
+  var deb;
+  function apply(){
+    var ts=toks(q.value), genre=activeChip, shown=0, ranked=[];
+    clr.classList.toggle("on", !!q.value);
+    tiles.forEach(function(t){
+      var sc=score(t,ts,genre);
+      if(sc<0){ t.classList.add("hide"); t.style.order=""; }
+      else { t.classList.remove("hide"); ranked.push([sc,t]); shown++; }
+    });
+    ranked.sort(function(a,b){ return b[0]-a[0] || a[1]._i-b[1]._i; });
+    ranked.forEach(function(p,idx){ p[1].style.order=idx; });
+    empty.classList.toggle("on", shown===0); empty.style.order=9999;
+    count.textContent = (q.value||genre)
+      ? (shown+" game"+(shown===1?"":"s")+" match"+(shown===1?"es":""))
+      : (tiles.length+" games");
+  }
+  q.addEventListener("input",function(){ clearTimeout(deb); deb=setTimeout(apply,90); });
+  q.addEventListener("keydown",function(e){ if(e.key==="Escape"){ reset(); } });
+  clr.addEventListener("click",function(){ reset(); q.focus(); });
+  function reset(){ q.value=""; activeChip="";
+    chipsWrap.querySelectorAll(".chip").forEach(function(x){x.classList.remove("on");x.setAttribute("aria-pressed","false");});
+    apply();
+  }
+  apply();
+})();
+</script>
 </body>
 </html>

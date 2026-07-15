@@ -6,12 +6,14 @@
     "stable": {
       "version": "v1.0.0",
       "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
-      "beacon_sri": "sha384-Zv9TlliJx2EQffwpivCVBTx2UWzqMwkdyh4Q3DDOmt2+OxGC48GREKSaxXoe4v1A"
+      "beacon_sri": "sha384-Zv9TlliJx2EQffwpivCVBTx2UWzqMwkdyh4Q3DDOmt2+OxGC48GREKSaxXoe4v1A",
+      "controls_sri": "sha384-9oWgqxlk6l7AJ1LT07IHiAQosUcHgfszDooL29L28fW+cuIGyVerxQUc93JcLwX/"
     },
     "canary": {
       "version": "v1.0.0",
       "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
-      "beacon_sri": "sha384-Zv9TlliJx2EQffwpivCVBTx2UWzqMwkdyh4Q3DDOmt2+OxGC48GREKSaxXoe4v1A"
+      "beacon_sri": "sha384-Zv9TlliJx2EQffwpivCVBTx2UWzqMwkdyh4Q3DDOmt2+OxGC48GREKSaxXoe4v1A",
+      "controls_sri": "sha384-9oWgqxlk6l7AJ1LT07IHiAQosUcHgfszDooL29L28fW+cuIGyVerxQUc93JcLwX/"
     }
   },
   "rollout": { "canary_pct": 0, "ring": 0, "expanded_at": null }
