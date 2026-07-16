@@ -268,38 +268,40 @@
   // or DOM, so it can never throw into the beacon path (staging fail-open is
   // unaffected if Turnstile is unavailable).
   var _tsLoading = false, _tsWidget = null;
+  function tsRender() {
+    try {
+      var ts = root.turnstile;
+      if (!ts || !ts.render || _tsWidget != null) return;
+      var d = root.document;
+      var el = d.getElementById("octago-ts");
+      if (!el) {
+        el = d.createElement("div");
+        el.id = "octago-ts";
+        el.style.cssText = "position:absolute;left:-9999px;top:0;width:0;height:0;overflow:hidden;";
+        (d.body || d.documentElement).appendChild(el);
+      }
+      _tsWidget = ts.render(el, {
+        sitekey: CFG.turnstile_sitekey,
+        callback: function (t) { CFG.turnstile = t; },
+        "expired-callback": function () { CFG.turnstile = ""; try { root.turnstile.reset(_tsWidget); } catch (_) {} },
+        "error-callback": function () { CFG.turnstile = ""; return true; }
+      });
+    } catch (_) {}
+  }
   function ensureTurnstile(force) {
     try {
-      if (!CFG.turnstile_sitekey) return;
-      if (typeof root.document === "undefined" || !root.document) return;
-      var d = root.document;
-      function doRender() {
-        var ts = root.turnstile;
-        if (!ts || !ts.render) return;
-        if (_tsWidget != null) { if (force) { try { ts.reset(_tsWidget); } catch (_) {} } return; }
-        var el = d.getElementById("octago-ts");
-        if (!el) {
-          el = d.createElement("div");
-          el.id = "octago-ts";
-          el.style.cssText = "position:absolute;left:-9999px;top:0;width:0;height:0;overflow:hidden;";
-          (d.body || d.documentElement).appendChild(el);
-        }
-        try {
-          _tsWidget = ts.render(el, {
-            sitekey: CFG.turnstile_sitekey,
-            callback: function (t) { CFG.turnstile = t; },
-            "expired-callback": function () { CFG.turnstile = ""; try { root.turnstile.reset(_tsWidget); } catch (_) {} },
-            "error-callback": function () { CFG.turnstile = ""; return true; }
-          });
-        } catch (_) {}
-      }
-      if (root.turnstile && root.turnstile.render) { doRender(); return; }
+      if (!CFG.turnstile_sitekey || typeof root.document === "undefined" || !root.document) return;
+      if (_tsWidget != null) { if (force) { try { root.turnstile.reset(_tsWidget); } catch (_) {} } return; }
+      if (root.turnstile && root.turnstile.render) { tsRender(); return; } // API already present
       if (_tsLoading) return;
       _tsLoading = true;
+      // Turnstile's explicit-render contract: it invokes the global named by ?onload=
+      // once the API is ready. More reliable than hooking script.onload + turnstile.ready.
+      try { root.__octagoTsOnload = tsRender; } catch (_) {}
+      var d = root.document;
       var s = d.createElement("script");
-      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=__octagoTsOnload";
       s.async = true; s.defer = true;
-      s.onload = function () { try { root.turnstile.ready(doRender); } catch (_) {} };
       (d.head || d.documentElement).appendChild(s);
     } catch (_) {}
   }

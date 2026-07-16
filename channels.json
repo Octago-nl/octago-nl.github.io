@@ -6,13 +6,13 @@
     "stable": {
       "version": "v1.0.0",
       "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
-      "beacon_sri": "sha384-9LZge3LubkR5mdIgNwOSX86jJXvUL/ClYknQ3TX43WKxIO4XoUyunXzAVqEWD+YH",
+      "beacon_sri": "sha384-bixDWlWjFCzSD1gVEIP+HnDBbePQ62R4pZcHQ5Ks7csK8l+HMJ0n7KiaPGkyCHhw",
       "controls_sri": "sha384-9oWgqxlk6l7AJ1LT07IHiAQosUcHgfszDooL29L28fW+cuIGyVerxQUc93JcLwX/"
     },
     "canary": {
       "version": "v1.0.0",
       "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
-      "beacon_sri": "sha384-9LZge3LubkR5mdIgNwOSX86jJXvUL/ClYknQ3TX43WKxIO4XoUyunXzAVqEWD+YH",
+      "beacon_sri": "sha384-bixDWlWjFCzSD1gVEIP+HnDBbePQ62R4pZcHQ5Ks7csK8l+HMJ0n7KiaPGkyCHhw",
       "controls_sri": "sha384-9oWgqxlk6l7AJ1LT07IHiAQosUcHgfszDooL29L28fW+cuIGyVerxQUc93JcLwX/"
     }
   },
