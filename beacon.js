@@ -183,7 +183,7 @@
     return fetch(CFG.collector.replace(/\/+$/, "") + "/e", {
       method: "POST",
       keepalive: true,
-      headers: { "content-type": "application/json", "x-octago-key": CFG.key },
+      headers: { "content-type": "application/json", "x-octagonl-key": CFG.key },
       body: body
     }).then(function (r) {
       inflight = false;

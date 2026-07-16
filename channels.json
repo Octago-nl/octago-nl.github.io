@@ -1,18 +1,18 @@
 {
   "current": "v1.0.0",
   "frozen": false,
-  "updated_at": "2026-07-12",
+  "updated_at": "2026-07-16",
   "channels": {
     "stable": {
       "version": "v1.0.0",
       "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
-      "beacon_sri": "sha384-Zv9TlliJx2EQffwpivCVBTx2UWzqMwkdyh4Q3DDOmt2+OxGC48GREKSaxXoe4v1A",
+      "beacon_sri": "sha384-9xAy8Ayi/f6OBDc+SQXh28gjsm4U1xxDrq36kxeYAop9lK9Pzc2X2iyui62y7oUh",
       "controls_sri": "sha384-9oWgqxlk6l7AJ1LT07IHiAQosUcHgfszDooL29L28fW+cuIGyVerxQUc93JcLwX/"
     },
     "canary": {
       "version": "v1.0.0",
       "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
-      "beacon_sri": "sha384-Zv9TlliJx2EQffwpivCVBTx2UWzqMwkdyh4Q3DDOmt2+OxGC48GREKSaxXoe4v1A",
+      "beacon_sri": "sha384-9xAy8Ayi/f6OBDc+SQXh28gjsm4U1xxDrq36kxeYAop9lK9Pzc2X2iyui62y7oUh",
       "controls_sri": "sha384-9oWgqxlk6l7AJ1LT07IHiAQosUcHgfszDooL29L28fW+cuIGyVerxQUc93JcLwX/"
     }
   },
