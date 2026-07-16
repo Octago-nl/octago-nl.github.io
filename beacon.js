@@ -44,8 +44,10 @@
 
   var CFG = {
     collector: "",           // window.OCTAGO_COLLECTOR — the one external collector
-    key: "octgnl_pub_live",  // PUBLIC ingest key (routing label, NOT a secret)
-    turnstile: "",           // Cloudflare Turnstile token (browser channel proof)
+    key: "octagonl-pub-1",   // PUBLIC ingest key (routing label, NOT a secret) — must match the collector's INGEST_KEYS
+    turnstile: "",           // Cloudflare Turnstile token (browser channel proof; SINGLE-USE)
+    turnstile_sitekey: "0x4AAAAAAD3RhbsEPd7q-CBe", // PUBLIC Turnstile sitekey (octagonl-arcade); "" disables the widget
+    session: "",             // beacon-session token the collector mints after a Turnstile pass (supersedes the single-use token)
     entity: "slug",          // default entity category
     slug: "",                // game slug (rides in dims.slug — collector shards on it)
     defaultDims: {},         // { variant, geo, ... } engine-supplied
@@ -177,7 +179,7 @@
 
     var sent = q.slice(0, CFG.maxBatch);
     var sentN = sent.length;
-    var body = JSON.stringify({ key: CFG.key, turnstile: CFG.turnstile, events: sent });
+    var body = JSON.stringify({ key: CFG.key, turnstile: CFG.turnstile, session: CFG.session, events: sent });
     inflight = true;
 
     return fetch(CFG.collector.replace(/\/+$/, "") + "/e", {
@@ -193,6 +195,9 @@
         // any of them is wasteful and would loop. Drop the sent window from the front.
         return r.json().catch(function () { return {}; }).then(function (j) {
           if (j && typeof j.sample_rate === "number") sampleRate = j.sample_rate;
+          // Capture the beacon-session the collector mints after a Turnstile pass; it
+          // supersedes the single-use Turnstile token on subsequent POSTs.
+          if (j && j.session) { CFG.session = j.session; CFG.turnstile = ""; }
           dropFront(sentN);
           backoff = CFG.backoffBase;                 // healthy — reset
           if (readBuf().length) flushSoon(200);      // drain the rest promptly
@@ -205,7 +210,16 @@
         retryLater(ra);
         return;
       }
-      // 400/401/413 etc: permanent for this batch (per collector status contract).
+      if (r.status === 401) {
+        // Unsigned channel: 401 == turnstile_required (session missing/expired). Drop the
+        // stale session, re-acquire a fresh Turnstile token, and retry — do NOT drop the
+        // batch (bounded by exponential backoff + the ring buffer's drop-oldest cap).
+        CFG.session = "";
+        ensureTurnstile(true);
+        retryLater(0);
+        return;
+      }
+      // 400/413 etc: permanent for this batch (per collector status contract).
       warn("beacon: permanent " + r.status + " on batch — dropping " + sentN + " event(s)");
       dropFront(sentN);
       backoff = CFG.backoffBase;
@@ -232,7 +246,7 @@
   function lastGasp() {
     var q = readBuf();
     if (!q.length || !CFG.collector) return;
-    var body = JSON.stringify({ key: CFG.key, turnstile: CFG.turnstile, events: q.slice(0, CFG.maxBatch) });
+    var body = JSON.stringify({ key: CFG.key, turnstile: CFG.turnstile, session: CFG.session, events: q.slice(0, CFG.maxBatch) });
     try {
       if (root.navigator && root.navigator.sendBeacon) {
         var blob = new Blob([body], { type: "application/json" });
@@ -246,12 +260,58 @@
   function warn(m) { try { if (root.console && root.console.warn) root.console.warn("[octago] " + m); } catch (_) {} }
 
   /* ---- public: init ----------------------------------------------------- */
+  // ---- Cloudflare Turnstile (browser-channel proof) ------------------------
+  // Loads the Turnstile script once and renders an INVISIBLE widget whose callback
+  // sets CFG.turnstile. The collector verifies that token ONCE and mints a beacon
+  // session (CFG.session) that carries the following POSTs — Turnstile tokens are
+  // single-use, so we never re-send one. Fully guarded + a no-op without a sitekey
+  // or DOM, so it can never throw into the beacon path (staging fail-open is
+  // unaffected if Turnstile is unavailable).
+  var _tsLoading = false, _tsWidget = null;
+  function ensureTurnstile(force) {
+    try {
+      if (!CFG.turnstile_sitekey) return;
+      if (typeof root.document === "undefined" || !root.document) return;
+      var d = root.document;
+      function doRender() {
+        var ts = root.turnstile;
+        if (!ts || !ts.render) return;
+        if (_tsWidget != null) { if (force) { try { ts.reset(_tsWidget); } catch (_) {} } return; }
+        var el = d.getElementById("octago-ts");
+        if (!el) {
+          el = d.createElement("div");
+          el.id = "octago-ts";
+          el.style.cssText = "position:absolute;left:-9999px;top:0;width:0;height:0;overflow:hidden;";
+          (d.body || d.documentElement).appendChild(el);
+        }
+        try {
+          _tsWidget = ts.render(el, {
+            sitekey: CFG.turnstile_sitekey,
+            callback: function (t) { CFG.turnstile = t; },
+            "expired-callback": function () { CFG.turnstile = ""; try { root.turnstile.reset(_tsWidget); } catch (_) {} },
+            "error-callback": function () { CFG.turnstile = ""; return true; }
+          });
+        } catch (_) {}
+      }
+      if (root.turnstile && root.turnstile.render) { doRender(); return; }
+      if (_tsLoading) return;
+      _tsLoading = true;
+      var s = d.createElement("script");
+      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      s.async = true; s.defer = true;
+      s.onload = function () { try { root.turnstile.ready(doRender); } catch (_) {} };
+      (d.head || d.documentElement).appendChild(s);
+    } catch (_) {}
+  }
+
   function init(cfg) {
     cfg = cfg || {};
     for (var k in cfg) if (Object.prototype.hasOwnProperty.call(cfg, k) && cfg[k] != null) CFG[k] = cfg[k];
     if (!CFG.collector) { try { CFG.collector = root.OCTAGO_COLLECTOR || ""; } catch (_) {} }
+    try { if (!cfg.turnstile_sitekey && root.OCTAGO_TURNSTILE_SITEKEY) CFG.turnstile_sitekey = root.OCTAGO_TURNSTILE_SITEKEY; } catch (_) {}
     if (started) { flushSoon(50); return API; }
     started = true;
+    ensureTurnstile(false); // pre-acquire a browser-proof token before the first flush
 
     // Flush lifecycle: idle timer + last-gasp on hide/unload (batch per CARTRIDGE §3).
     try {

@@ -6,15 +6,19 @@
     "stable": {
       "version": "v1.0.0",
       "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
-      "beacon_sri": "sha384-9xAy8Ayi/f6OBDc+SQXh28gjsm4U1xxDrq36kxeYAop9lK9Pzc2X2iyui62y7oUh",
+      "beacon_sri": "sha384-9LZge3LubkR5mdIgNwOSX86jJXvUL/ClYknQ3TX43WKxIO4XoUyunXzAVqEWD+YH",
       "controls_sri": "sha384-9oWgqxlk6l7AJ1LT07IHiAQosUcHgfszDooL29L28fW+cuIGyVerxQUc93JcLwX/"
     },
     "canary": {
       "version": "v1.0.0",
       "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
-      "beacon_sri": "sha384-9xAy8Ayi/f6OBDc+SQXh28gjsm4U1xxDrq36kxeYAop9lK9Pzc2X2iyui62y7oUh",
+      "beacon_sri": "sha384-9LZge3LubkR5mdIgNwOSX86jJXvUL/ClYknQ3TX43WKxIO4XoUyunXzAVqEWD+YH",
       "controls_sri": "sha384-9oWgqxlk6l7AJ1LT07IHiAQosUcHgfszDooL29L28fW+cuIGyVerxQUc93JcLwX/"
     }
   },
-  "rollout": { "canary_pct": 0, "ring": 0, "expanded_at": null }
+  "rollout": {
+    "canary_pct": 0,
+    "ring": 0,
+    "expanded_at": null
+  }
 }
