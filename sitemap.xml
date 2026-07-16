@@ -14,4 +14,8 @@
   <url><loc>https://octago.nl/bastion-4</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://octago.nl/myriapod-grove</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://octago.nl/aegis-arc</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/gate-crasher</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/octa-match</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/prism-stacker</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/tunnel-pulse</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>
