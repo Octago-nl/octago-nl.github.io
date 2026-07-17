@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="8%" r="120%">
+      <stop offset="0" stop-color="#2a1160"/>
+      <stop offset="0.55" stop-color="#0b0420"/>
+      <stop offset="1" stop-color="#050213"/>
+    </radialGradient>
+    <linearGradient id="og" x1="512" y1="122" x2="688" y2="298" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#20e6ff"/>
+      <stop offset="1" stop-color="#ff2fb9"/>
+    </linearGradient>
+    <filter id="gl" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="tg" x="-20%" y="-60%" width="140%" height="220%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g opacity="0.4" stroke="#20e6ff" stroke-width="1">
+    <path d="M0 90 H1200 M0 180 H1200 M0 450 H1200 M0 540 H1200"/>
+  </g>
+  <g filter="url(#gl)">
+    <polygon points="687.8,246.4 636.4,297.8 563.6,297.8 512.2,246.4 512.2,173.6 563.6,122.2 636.4,122.2 687.8,173.6"
+             fill="none" stroke="url(#og)" stroke-width="12" stroke-linejoin="round"/>
+    <polygon points="582,182 582,238 628,210" fill="url(#og)"/>
+  </g>
+  <text x="600" y="430" text-anchor="middle" filter="url(#tg)"
+        font-family="Menlo, monospace" font-size="96" font-weight="700" letter-spacing="2" fill="#ffffff">OCTAG<tspan fill="#20e6ff">O</tspan>NAL</text>
+  <text x="600" y="500" text-anchor="middle"
+        font-family="Menlo, monospace" font-size="30" letter-spacing="6" fill="#8f86c9">EIGHT SIDES · EIGHT BITS · INFINITE CONTINUES</text>
+  <text x="600" y="565" text-anchor="middle"
+        font-family="Menlo, monospace" font-size="28" font-weight="700" letter-spacing="4" fill="#ff2fb9">octago.nl · insert coin</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 128" width="470" height="128" role="img" aria-label="Octagonal">
+  <defs>
+    <linearGradient id="lg" x1="16" y1="16" x2="112" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#20e6ff"/>
+      <stop offset="1" stop-color="#ff2fb9"/>
+    </linearGradient>
+    <filter id="gl" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="tg" x="-20%" y="-40%" width="140%" height="180%">
+      <feGaussianBlur stdDeviation="3.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#gl)">
+    <polygon points="112,84 84,112 44,112 16,84 16,44 44,16 84,16 112,44"
+             fill="none" stroke="url(#lg)" stroke-width="8" stroke-linejoin="round"/>
+    <polygon points="52,42 52,86 90,64" fill="url(#lg)"/>
+  </g>
+  <text x="140" y="82" filter="url(#tg)"
+        font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+        font-size="52" font-weight="700" letter-spacing="1.5" fill="#ffffff">OCTAG<tspan fill="#20e6ff">O</tspan>NAL</text>
+</svg>

@@ -11,6 +11,17 @@
 <meta property="og:title" content="Octagonal — vibe-coded retro arcade">
 <meta property="og:description" content="An arcade for games that probably shouldn't exist. Insert coin.">
 <meta property="og:url" content="https://octago.nl/">
+<meta property="og:image" content="https://octago.nl/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Octagonal — vibe-coded retro arcade">
+<meta name="twitter:description" content="An arcade for games that probably shouldn't exist. Insert coin.">
+<meta name="twitter:image" content="https://octago.nl/og.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"CollectionPage","name":"Octagonal Arcade",
  "url":"https://octago.nl/","about":"A curated arcade of vibe-coded retro-inspired browser games.",
@@ -25,6 +36,7 @@
   .scan{position:fixed;inset:0;z-index:-1;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.14) 2px 3px)}
   h1{font-size:clamp(34px,10vw,72px);margin:.2em 0 0;letter-spacing:.04em;color:#fff;text-shadow:0 0 12px var(--mag),0 0 34px rgba(255,47,185,.6)}
   h1 .a{color:var(--cyan);text-shadow:0 0 12px var(--cyan),0 0 34px rgba(32,230,255,.6)}
+  .mark{margin-bottom:-4px;filter:drop-shadow(0 0 10px rgba(32,230,255,.35))}
   .tag{color:var(--dim);letter-spacing:.14em;text-transform:uppercase;font-size:clamp(11px,2.6vw,14px)}
   .marq{overflow:hidden;white-space:nowrap;max-width:96vw;color:var(--cyan);opacity:.8;font-size:12px;letter-spacing:.2em}
   .marq b{color:var(--mag)}
@@ -62,6 +74,7 @@
 </head>
 <body>
   <div class="grid-bg"></div><div class="scan"></div>
+  <img class="mark" src="/logomark.svg" width="84" height="84" alt="" fetchpriority="high">
   <div class="tag">⯃ octago.nl</div>
   <h1>OCTAG<span class="a">O</span>NAL</h1>
   <div class="tag">Eight sides · eight bits · infinite continues</div>
