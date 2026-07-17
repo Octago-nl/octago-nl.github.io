@@ -94,6 +94,22 @@
     return h[0] + h[1] + h[2] + h[3] + "-" + h[4] + h[5] + "-" + h[6] + h[7] +
            "-" + h[8] + h[9] + "-" + h[10] + h[11] + h[12] + h[13] + h[14] + h[15];
   }
+  // Persistent anon player id (oct_pid) + per-tab session id (oct_sid). Random, no
+  // PII — lets the collector compute players / sessions / retention (blob3 / blob8).
+  var _pid, _sid;
+  function pid() {
+    if (_pid != null) return _pid;
+    try { var s = ls(); _pid = (s && s.getItem("oct_pid")) || ""; if (!_pid) { _pid = uuid(); if (s) s.setItem("oct_pid", _pid); } }
+    catch (_) { _pid = _pid || uuid(); }
+    return _pid;
+  }
+  function ss() { try { return root.sessionStorage; } catch (_) { return null; } }
+  function sid() {
+    if (_sid != null) return _sid;
+    try { var s = ss(); _sid = (s && s.getItem("oct_sid")) || ""; if (!_sid) { _sid = uuid(); if (s) s.setItem("oct_sid", _sid); } }
+    catch (_) { _sid = _sid || uuid(); }
+    return _sid;
+  }
   // Deterministic [0,1) from a string — same FNV-1a the collector uses so client
   // + server sampling agree on which event_ids survive.
   function hashUnit(s) {
@@ -120,7 +136,8 @@
       device: d.device || dd.device || device(),
       variant: d.variant || dd.variant || "",
       referrer: d.referrer || dd.referrer || refOnce(),
-      player: d.player || dd.player || ""         // oct_pid — engine sets it via defaultDims
+      player: d.player || dd.player || pid(),       // persistent anon oct_pid (blob3)
+      session_id: d.session_id || dd.session_id || sid() // per-tab session (blob8)
     };
     var slug = opts.slug || CFG.slug;
     if (entity === "slug" && slug) dims.slug = String(slug); // collector shards on dims.slug
