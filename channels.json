@@ -7,13 +7,13 @@
       "version": "v1.0.0",
       "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
       "beacon_sri": "sha384-UzU4OMZ3w6/DxUlRq/Uej9E3ePQg8eYOHIknoNMPzRymT45dRwUThpKmJw+zg5ow",
-      "controls_sri": "sha384-9oWgqxlk6l7AJ1LT07IHiAQosUcHgfszDooL29L28fW+cuIGyVerxQUc93JcLwX/"
+      "controls_sri": "sha384-SyByK85FZ/jYWHT0b4LWGfOB5EULvzNANKe1efTPPZfMfVRsuwdmJoruoJcgKde4"
     },
     "canary": {
       "version": "v1.0.0",
       "sri": "sha384-AEb98JVQQOMMeRzzZlttsFEl8Zn4iDNk5lejDbPPVOqTK1XS//vmv04z36sdg31Q",
       "beacon_sri": "sha384-UzU4OMZ3w6/DxUlRq/Uej9E3ePQg8eYOHIknoNMPzRymT45dRwUThpKmJw+zg5ow",
-      "controls_sri": "sha384-9oWgqxlk6l7AJ1LT07IHiAQosUcHgfszDooL29L28fW+cuIGyVerxQUc93JcLwX/"
+      "controls_sri": "sha384-SyByK85FZ/jYWHT0b4LWGfOB5EULvzNANKe1efTPPZfMfVRsuwdmJoruoJcgKde4"
     }
   },
   "rollout": {

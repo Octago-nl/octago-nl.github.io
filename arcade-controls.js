@@ -156,13 +156,19 @@
     mountEl.appendChild(deck);
 
     /* ---- keyboard (mirrored to virtual controls) ------------------------ */
+    // Mirror ONLY real hardware-keyboard events. Ignore synthetic (untrusted) key
+    // events — a game may bridge the on-screen deck back to its key handlers by
+    // dispatching synthetic keys (touch->key), and mirroring those would feed the
+    // deck's own keyboard-held state back into snapshot() and stick a direction.
     function onKeyDown(e) {
+      if (!e.isTrusted) return;
       if (e.repeat) return;
       var used = false;
       for (var i = 0; i < order.length; i++) if (order[i].keydown(e)) used = true;
       if (used) { /* let games preventDefault at their layer if desired */ }
     }
     function onKeyUp(e) {
+      if (!e.isTrusted) return;
       for (var i = 0; i < order.length; i++) order[i].keyup(e);
     }
     root.addEventListener("keydown", onKeyDown);
