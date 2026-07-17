@@ -310,6 +310,11 @@
     cfg = cfg || {};
     for (var k in cfg) if (Object.prototype.hasOwnProperty.call(cfg, k) && cfg[k] != null) CFG[k] = cfg[k];
     if (!CFG.collector) { try { CFG.collector = root.OCTAGO_COLLECTOR || ""; } catch (_) {} }
+    // Slug attribution: prefer explicit window.OCTAGO_SLUG, else derive from the URL
+    // path's first segment (octago.nl/<slug>/). Without this, a game that forgets to
+    // set the slug emits slug-entity events with no dims.slug -> collector shards them
+    // as "unknown". The URL fallback attributes every game correctly by default.
+    if (!CFG.slug) { try { CFG.slug = root.OCTAGO_SLUG || (root.location && root.location.pathname.split("/").filter(Boolean)[0]) || ""; } catch (_) {} }
     try { if (!cfg.turnstile_sitekey && root.OCTAGO_TURNSTILE_SITEKEY) CFG.turnstile_sitekey = root.OCTAGO_TURNSTILE_SITEKEY; } catch (_) {}
     if (started) { flushSoon(50); return API; }
     started = true;
