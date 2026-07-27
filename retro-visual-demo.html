@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OCTAGO_RETRO — retro-visual.js canary demo (cr-retro-visual-gen-0006)</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:,">
+<style>
+  html,body{margin:0;background:#0b0420;color:#f5e6ff;font:12px ui-monospace,Menlo,Consolas,monospace}
+  body{padding:16px}
+  h1{font-size:14px;color:#ffcc33;text-shadow:0 0 8px #ff2a6d}
+  .row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+  .panel{border:1px solid #6a4b8a;border-radius:8px;padding:8px;background:#120726}
+  .panel h2{font-size:11px;margin:0 0 6px;color:#31e0ff}
+  canvas{display:block;background:#05010f;image-rendering:pixelated}
+  button{font:inherit;background:#1a0b30;color:#f5e6ff;border:1px solid #31e0ff;border-radius:4px;padding:4px 8px;cursor:pointer}
+  #log{white-space:pre;font-size:11px;color:#8f86c9;max-width:900px}
+  .sw{display:inline-block;width:14px;height:14px;border:1px solid #000;vertical-align:middle}
+</style>
+</head>
+<body>
+  <h1>OCTAGO_RETRO — 8/16-bit console-generation demo (all 6 capabilities, zero binary assets)</h1>
+
+  <div class="row">
+    <div class="panel">
+      <h2>1. Extended palette (C64 / Amiga / Genesis)</h2>
+      <div id="pal-c64"></div>
+      <div id="pal-amiga"></div>
+      <div id="pal-genesis"></div>
+    </div>
+
+    <div class="panel">
+      <h2>2. Multi-layer parallax</h2>
+      <canvas id="cv-parallax" width="240" height="120"></canvas>
+    </div>
+
+    <div class="panel">
+      <h2>3. Sprite-atlas + frame-cycle</h2>
+      <canvas id="cv-sprite" width="120" height="120"></canvas>
+      <button id="btn-clip">toggle clip</button>
+    </div>
+
+    <div class="panel">
+      <h2>4. Ordered-dither + chunky-pixel (C64)</h2>
+      <canvas id="cv-dither" width="240" height="120"></canvas>
+    </div>
+
+    <div class="panel">
+      <h2>5. Copper-style gradient (Amiga sky)</h2>
+      <canvas id="cv-copper" width="240" height="120"></canvas>
+    </div>
+
+    <div class="panel">
+      <h2>6. Chip-synth (SID 3-voice / FM stab)</h2>
+      <button id="btn-sid-square">SID square</button>
+      <button id="btn-sid-sweep">SID filter sweep</button>
+      <button id="btn-fm-stab">Genesis FM stab</button>
+    </div>
+  </div>
+
+  <div id="log">ready</div>
+
+<script src="retro-visual.js"></script>
+<script>
+(function () {
+  var R = window.OCTAGO_RETRO;
+  var log = document.getElementById("log");
+  var events = [];
+  function note(s) { events.push(s); log.textContent = events.slice(-14).join("\n"); }
+
+  /* 1. palette swatches */
+  ["c64", "amiga", "genesis"].forEach(function (name) {
+    var host = document.getElementById("pal-" + name);
+    var pal = R.palette.get(name);
+    host.appendChild(document.createTextNode(name.toUpperCase() + " (" + pal.length + "): "));
+    pal.forEach(function (hex) {
+      var sw = document.createElement("span");
+      sw.className = "sw"; sw.style.background = hex; sw.title = hex;
+      host.appendChild(sw);
+    });
+  });
+  note("palette: c64=" + R.palette.get("c64").length + " amiga=" + R.palette.get("amiga").length + " genesis=" + R.palette.get("genesis").length);
+
+  /* 2. parallax — 3 bands at different speeds, drawn as simple repeating shapes */
+  var pCv = document.getElementById("cv-parallax"), pCx = pCv.getContext("2d");
+  var parallax = R.parallax.create({ layers: [
+    { speed: 0.15, tileWidth: 80, draw: function (ctx, x, y, w, h) { ctx.fillStyle = R.palette.house.dim; ctx.fillRect(x, h - 30, w - 4, 30); } },
+    { speed: 0.5, tileWidth: 60, draw: function (ctx, x, y, w, h) { ctx.fillStyle = R.palette.house.magenta; ctx.fillRect(x + 4, h - 55, w - 16, 25); } },
+    { speed: 1.2, tileWidth: 30, draw: function (ctx, x, y, w, h) { ctx.fillStyle = R.palette.house.cyan; ctx.fillRect(x + 6, h - 14, 10, 14); } }
+  ] });
+  (function loop() {
+    pCx.fillStyle = R.palette.house.void; pCx.fillRect(0, 0, pCv.width, pCv.height);
+    parallax.scroll(1.5);
+    parallax.render(pCx, pCv.width, pCv.height);
+    requestAnimationFrame(loop);
+  })();
+
+  /* 3. sprite atlas + frame-cycle animator (procedural, palette-indexed) */
+  var genesisPal = R.palette.get("genesis");
+  var atlas = R.sprite.createAtlas({
+    cell: 24, palette: genesisPal,
+    clips: {
+      idle: [[{ op: "rect", x: 4, y: 4, w: 16, h: 16, c: 2 }]],
+      walk: [
+        [{ op: "poly", pts: [[4, 20], [12, 4], [20, 20]], c: 4 }],
+        [{ op: "poly", pts: [[4, 18], [12, 2], [20, 18]], c: 5 }],
+        [{ op: "poly", pts: [[4, 20], [12, 6], [20, 20]], c: 6 }]
+      ],
+      attack: [
+        [{ op: "circle", x: 12, y: 12, r: 10, c: 7 }],
+        [{ op: "circle", x: 12, y: 12, r: 6, c: 9 }]
+      ]
+    }
+  });
+  var anim = R.sprite.createAnimator(atlas, { clip: "walk", fps: 6 });
+  var sCv = document.getElementById("cv-sprite"), sCx = sCv.getContext("2d");
+  var clips = ["walk", "attack", "idle"], clipIdx = 0;
+  document.getElementById("btn-clip").addEventListener("click", function () {
+    clipIdx = (clipIdx + 1) % clips.length; anim.setClip(clips[clipIdx]); note("sprite: clip -> " + clips[clipIdx]);
+  });
+  var lastT = performance.now();
+  (function sloop() {
+    var now = performance.now(), dt = (now - lastT) / 1000; lastT = now;
+    anim.update(dt);
+    sCx.fillStyle = R.palette.house.void; sCx.fillRect(0, 0, sCv.width, sCv.height);
+    anim.draw(sCx, 48, 40, 24, 24, false);
+    requestAnimationFrame(sloop);
+  })();
+
+  /* 4. chunky-pixel low-res buffer + ordered dither + palette quantize */
+  var dCv = document.getElementById("cv-dither"), dCx = dCv.getContext("2d");
+  var chunky = R.pixel.createChunkyBuffer(dCv.width, dCv.height, 6);
+  var g = chunky.ctx.createLinearGradient(0, 0, chunky.width, 0);
+  g.addColorStop(0, R.palette.house.void); g.addColorStop(0.5, R.palette.house.magenta); g.addColorStop(1, R.palette.house.gold);
+  chunky.ctx.fillStyle = g; chunky.ctx.fillRect(0, 0, chunky.width, chunky.height);
+  R.pixel.ditherQuantize(chunky.ctx, 0, 0, chunky.width, chunky.height, { palette: "c64", matrix: 4 });
+  chunky.blit(dCx, 0, 0, dCv.width, dCv.height);
+  note("dither+chunky: " + chunky.width + "x" + chunky.height + " -> quantized to c64 (" + R.palette.get("c64").length + " swatches)");
+
+  /* 5. copper-style stepped/interpolated vertical gradient (Amiga sky) */
+  var cCv = document.getElementById("cv-copper"), cCx = cCv.getContext("2d");
+  R.gradient.copper(cCx, 0, 0, cCv.width, cCv.height, [
+    { t: 0, color: R.palette.house.void }, { t: 0.45, color: R.palette.house.violet },
+    { t: 0.75, color: R.palette.house.magenta }, { t: 1, color: R.palette.house.gold }
+  ], { steps: 20 });
+  note("copper gradient drawn (cached — same stops next frame won't reallocate)");
+
+  /* 6. chip-synth voice presets, added to a lazily-created AudioContext the
+   * same way a game's existing Sound module would (autoplay policy: only
+   * create/resume on a user gesture, hence the button-triggered demo). */
+  var actx = null;
+  function ac() { if (!actx) { var AC = window.AudioContext || window.webkitAudioContext; actx = AC ? new AC() : null; } return actx; }
+  document.getElementById("btn-sid-square").addEventListener("click", function () {
+    var c = ac(); if (!c) return note("no AudioContext available"); var sid = R.audio.sid3(c, c.destination);
+    sid.square(440, 0.12, { gain: 0.3 }); note("sid3.square(440)");
+  });
+  document.getElementById("btn-sid-sweep").addEventListener("click", function () {
+    var c = ac(); if (!c) return note("no AudioContext available"); var sid = R.audio.sid3(c, c.destination);
+    sid.filterSweep("square", 220, 0.3, 4000, 200); note("sid3.filterSweep(220 -> lp 4000->200)");
+  });
+  document.getElementById("btn-fm-stab").addEventListener("click", function () {
+    var c = ac(); if (!c) return note("no AudioContext available"); var fm = R.audio.fmStab(c, c.destination);
+    fm.stab(330, { modRatio: 2.5, modIndex: 260 }); note("fmStab.stab(330)");
+  });
+
+  /* QA hook, matches the ?debug=1 / window.__XX convention used by cartridges. */
+  window.__retroVisualTest = {
+    palette: function (n) { return R.palette.get(n); },
+    parallaxWorld: function () { return parallax.world; },
+    spriteFrame: function () { return anim.frame(); },
+    version: R.version
+  };
+  window.__READY = true;
+  note("OCTAGO_RETRO v" + R.version + " ready — all 6 capabilities live");
+})();
+</script>
+</body>
+</html>

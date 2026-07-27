@@ -20,5 +20,14 @@
     "canary_pct": 0,
     "ring": 0,
     "expanded_at": null
+  },
+  "modules": {
+    "retro_visual": {
+      "_comment": "cr-retro-visual-gen-0006 — additive opt-in module (engine.js/beacon.js/arcade-controls.js untouched). A Cartridge loads it alongside the other three from this same canonical origin. Adoption is N/A until a pilot cartridge opts in.",
+      "version": "v1.0.0",
+      "file": "retro-visual.js",
+      "sri": "sha384-n0FCKEmEp256zK1eOYSV3bBNhc7cIed+8lcDq7iU5vqK3lfDNLweucj78N8xfyAJ",
+      "rollout": { "canary_pct": 0, "ring": 0, "expanded_at": null }
+    }
   }
 }
