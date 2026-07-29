@@ -44,4 +44,9 @@
   <url><loc>https://octago.nl/cog-vanguard</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://octago.nl/coil-breach</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://octago.nl/umbra-passage</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/delve-cache</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/hue-bounce</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/snare-dash</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/umbra-strike</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/parry-tempo</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>
