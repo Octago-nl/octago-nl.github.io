@@ -38,4 +38,10 @@
   <url><loc>https://octago.nl/grip-runner</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://octago.nl/shuffle-drop</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://octago.nl/cargo-drift</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/pitch-blitz</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/squad-signal</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/cadre-override</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/cog-vanguard</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/coil-breach</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://octago.nl/umbra-passage</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>
